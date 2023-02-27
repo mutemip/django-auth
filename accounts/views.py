@@ -5,6 +5,9 @@ from django.contrib import messages
 
 
 
+def home(request):
+    return render(request, "home.html")
+
 # Our register view
 def register_View(request):
     form = RegisterForm()
