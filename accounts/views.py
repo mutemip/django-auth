@@ -6,7 +6,7 @@ from django.contrib import messages
 
 
 # Our register view
-def Register_View(request):
+def register_View(request):
     form = RegisterForm()
     if request.method == "POST":
         form = RegisterForm(request.POST)

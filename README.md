@@ -69,11 +69,57 @@ class RegisterForm(UserCreationForm):
         return user
 
 ```
+## Let's go to ``views.py`` and write a ``Register_View`` function to handle our logic
 
-## Step 9: Create a folder named ``templates`` inside your app ``accounts `` folder 
+```
+from django.contrib.auth import login
+from django.contrib import messages
+
+
+
+# Our register view
+def register_View(request):
+    form = RegisterForm()
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save() # save passed data
+            login(request, user) # login the user
+            messages.success(request, "Registration Successful")
+            return redirect("/")
+        messages.error(request, "Invalid information")
+    return render(request, "register.html", {"register_form": form})
+```
+
+## Add ``urls.py`` file inside ``accounts`` app and configure our ``register_view`` in it.
+
+```
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+        path('register/', views.register_View, name="register"),
+    ]
+
+```
+
+## include ``apps level`` urls.py file in ``project level`` urls.py, import ``include`` function
+
+```
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include("accounts.urls"))
+]
+
+```
+
+## Step : Create a folder named ``templates`` inside your app ``accounts `` folder 
 * Create `` register.html `` file in the ``templates`` folder
 
-### write this code in it
+### write this code in it, to call ``register_form`` key in ``{{}}`` tags
 ```
     <div class="container py-5">
         <h1>Register</h1>
