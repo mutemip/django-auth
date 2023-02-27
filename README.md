@@ -148,3 +148,4 @@ urlpatterns = [
 
 ```
 
+## Let's style our Register form using ``Django-Crispy forms``
