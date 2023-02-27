@@ -72,24 +72,33 @@ class RegisterForm(UserCreationForm):
 ## Let's go to ``views.py`` and write a ``Register_View`` function to handle our logic
 
 ```
-from django.contrib.auth import login
-from django.contrib import messages
+    from django.shortcuts import render, redirect
+    from .forms import RegisterForm
+    from django.contrib.auth import login
+    from django.contrib import messages
 
-
-
-# Our register view
-def register_View(request):
-    form = RegisterForm()
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save() # save passed data
-            login(request, user) # login the user
-            messages.success(request, "Registration Successful")
-            return redirect("/")
-        messages.error(request, "Invalid information")
-    return render(request, "register.html", {"register_form": form})
+    # Our register view
+    def register_View(request):
+        form = RegisterForm()
+        if request.method == "POST":
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                user = form.save() # save passed data
+                login(request, user) # login the user
+                messages.success(request, "Registration Successful")
+                return redirect("/")
+            messages.error(request, "Invalid information")
+        return render(request, "register.html", {"register_form": form})
 ```
+__NOTE__:
+* we import ``RegisterForm`` from **forms.py** file and ``login`` from ``django.contrib.auth`` and the created a ``register_view`` function
+
+* There are two if/else statements within the function. The first checks to see if the form is being posted while the second checks to see if the form is valid. If both are True, then the form information is saved under a user, the user is logged in, and the user is redirected to the homepage showing a success message.
+
+* Else, if the form is not valid, an error message is shown. But if the request is not a POST in the first place, meaning the first if statement returned False, render the empty form in the register template. 
+
+* Please note that if you wish to add messages to your Django project you must enable the Messages Framework and import messages at the top of views.py. 
+
 
 ## Add ``urls.py`` file inside ``accounts`` app and configure our ``register_view`` in it.
 
@@ -103,7 +112,7 @@ def register_View(request):
 
 ```
 
-## include ``apps level`` urls.py file in ``project level`` urls.py, import ``include`` function
+## Include ``apps level`` urls.py file in ``project level`` urls.py, import ``include`` function
 
 ```
 from django.contrib import admin
@@ -115,6 +124,8 @@ urlpatterns = [
 ]
 
 ```
+
+
 
 ## Step : Create a folder named ``templates`` inside your app ``accounts `` folder 
 * Create `` register.html `` file in the ``templates`` folder
