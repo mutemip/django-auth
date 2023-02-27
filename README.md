@@ -14,6 +14,9 @@
 ## Step 4: Create Django project named `` django-auth ``
 * Use command: `` django-admin startproject django-auth . ``
 
+Run migrate command: ``python manage.py migrate``
+Create super user using: ``python manage.py createsuperuser``
+
 ## Step 5: Create Django app named ``accounts``
 * Use command: ``python manage.py startapp accounts``
 
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     * We can **customize** this built-in form using ``forms.py`` that we created inside the app ``account`` folder
     * Let's call ``UserCreationForm`` within a new class called ``RegisterForm`` in ``forms.py `` and add another field called ``email``. Save the email to the user.
 
+
 ## Step 8: make sure you have this in ``forms.py ``
 ```
 from django import forms
@@ -53,16 +57,16 @@ class RegisterForm(UserCreationForm):
     You can add more fields as needed
     """
     # additional fields
-    email = forms.EmailField(unique=True, required=True)
+    email = forms.EmailField(required=True)
 
     # model to use
     class Meta:
         model = User
-        fields = ("Username", "email", "password1", "password2")
+        fields = ("username", "email", "password1", "password2")
 
     # a function to save cleaned data from the form
     def save(self, commit=True):
-        user = super(RegisterForm, commit=False) # super function is refering to Parent class
+        user = super(RegisterForm, self).save(commit=False) # super function is refering to Parent class
         user.email = self.cleaned_data["email"] # handling additional fields
         if commit:
             user.save()
