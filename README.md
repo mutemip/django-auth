@@ -17,7 +17,7 @@
 ## Step 5: Create Django app named ``accounts``
 * Use command: ``python manage.py startapp accounts``
 
-## Register your ``accounts`` app in ``settings.py`` file in ``INSTALLED_APPS`` list
+## Step 6: Register your ``accounts`` app in ``settings.py`` file in ``INSTALLED_APPS`` list
 ```
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-## User registration
+## Step 7: User registration
 * Django comes with a built-in user registration form. We just need to configure it to our needs
 
 ### Let's start by creating user registration form
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     * We can **customize** this built-in form using ``forms.py`` that we created inside the app ``account`` folder
     * Let's call ``UserCreationForm`` within a new class called ``RegisterForm`` in ``forms.py `` and add another field called ``email``. Save the email to the user.
 
-## make sure you have this in ``forms.py ``
+## Step 8: make sure you have this in ``forms.py ``
 ```
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -67,4 +67,23 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
 ```
+
+## Step 9: Create a folder named ``templates`` inside your app ``accounts `` folder 
+* Create `` register.html `` file in the ``templates`` folder
+
+### write this code in it
+```
+    <div class="container py-5">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ register_form }}                    
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+        <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+    </div>
+
+```
+
